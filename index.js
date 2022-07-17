@@ -4,6 +4,9 @@ const fastify = require("fastify")();
 const c = require("./constants");
 const { clamp } = require("./numbers");
 
+fastify.register(require("@fastify/cors"));
+fastify.register(require("@fastify/helmet"));
+
 fastify.get("*", function (request, reply) {
   const { gjCount, ...queries } = request.query;
 

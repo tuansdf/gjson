@@ -12,6 +12,8 @@
   "description": "",
   "dependencies": {
     "@faker-js/faker": "^7.3.0",
+    "@fastify/cors": "^8.0.0",
+    "@fastify/helmet": "^9.1.0",
     "fastify": "^4.2.1"
   },
   "devDependencies": {
