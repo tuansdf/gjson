@@ -7,45 +7,37 @@ const { clamp } = require("./numbers");
 fastify.register(require("@fastify/cors"));
 fastify.register(require("@fastify/helmet"));
 
-fastify.get("*", function (request, reply) {
-  const { gjCount, ...queries } = request.query;
+const getGeneratedJSON = (queries, repeat) => {
+  repeat = clamp(c.MIN_REPEAT, repeat, c.MAX_REPEAT) || c.DEFAULT_REPEAT;
 
-  let count = clamp(c.MIN_COUNT, gjCount, c.MAX_COUNT) || c.DEFAULT_COUNT;
+  const result = [];
 
-  // the result array
-  const objArr = [];
-
-  for (let i = 0; i < count; i++) {
-    // will be pushed into array
-    const obj = {};
-
-    for (const [key, types] of Object.entries(queries)) {
-      const typeArr = types.split(c.TYPES_SEPARATOR);
-
-      let tempArr = [];
-      // generate random for each type
-      for (const type of typeArr) {
-        const [first, second] = type.split(c.METHOD_SEPARATOR);
-        const temp = faker[first]?.[second]?.();
-        // if type is valid, random is pushed into array
-        if (temp) tempArr.push(temp);
-      }
-
-      obj[key] = tempArr.join(" ");
+  for (let i = 0; i < repeat; i++) {
+    result[i] = {};
+    for (const [key, type] of Object.entries(queries)) {
+      const [first, second] = type.split(c.METHODS_SEPARATOR);
+      result[i][key] = faker[first]?.[second]?.();
     }
-
-    objArr.push(obj);
   }
 
-  // if count is provided, return array, else return object
-  reply.send(gjCount ? objArr : objArr[0]);
+  return repeat ? result : result[0];
+};
+
+fastify.get("*", function (request, reply) {
+  const { _repeat, ...queries } = request.query;
+  reply.send(getGeneratedJSON(queries, _repeat));
+});
+
+fastify.post("*", function (request, reply) {
+  const { _repeat, ...queries } = request.body;
+  reply.send(getGeneratedJSON(queries, _repeat));
 });
 
 // start server
 const port = process.env.PORT || 5000;
 fastify.listen({ port }, function (err, address) {
   if (err) {
-    fastify.log.error(err);
+    console.log(err);
     process.exit(1);
   }
   console.log(`Listening on port ${address}`);

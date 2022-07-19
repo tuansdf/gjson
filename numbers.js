@@ -1,5 +1,6 @@
 module.exports.clamp = (min, number, max) => {
-  if (!number) return;
+  number = Number(number);
+  if (!number && number !== 0) return;
   if (number < min) return min;
   if (number > max) return max;
   return number;
