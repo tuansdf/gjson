@@ -1,0 +1,32 @@
+{
+  "name": "gjson",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "bun run --hot src/server.ts",
+    "build": "rimraf dist && bun build src/server.ts --outdir=dist --target=bun --sourcemap=linked",
+    "start": "bun run dist/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@typescript-eslint/eslint-plugin": "^7.16.0",
+    "@typescript-eslint/parser": "^7.16.0",
+    "eslint": "^9.7.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.3.3",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "dayjs": "^1.11.11",
+    "hono": "^4.4.13"
+  }
+}
