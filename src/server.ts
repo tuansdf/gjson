@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { fakerRouter } from "~/faker/faker.router";
+import "dotenv/config";
 
 const app = new Hono();
 
@@ -12,7 +13,7 @@ app.onError((err, c) => {
   return c.json({ message: "Something Went Wrong" }, 500);
 });
 
-const port = process.env.PORT || 5000;
+const port = process.env.GJSON_PORT || 5000;
 console.log(`Server is running on port ${port}`);
 
 export default {
